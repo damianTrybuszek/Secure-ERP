@@ -44,10 +44,8 @@ def print_table(table, headers):
     for element in counters:
         sum_counters += len(str(element))
 
-    
-
     print("/"+(sum_counters*"-")+"\\")
-    print('   '.join(headers))
+    print(' '.join(headers))
     for data in table:
         print('            '.join(data))
     print("\\"+(sum_counters*"-")+"/")
