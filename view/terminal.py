@@ -43,11 +43,31 @@ def print_table(table, headers):
     
     for element in counters:
         sum_counters += len(str(element))
+    
+    cols_width = ["|"]
+
+    for element in counters:
+        cols_width.append((len(str(element))+4)*"-"+"|")
+
+
+    rows = ["|"]
+    row_second = ["|"]
+
+    for i  in range(len(headers)):
+        row_second.append("  "+headers[i]+(len(str(counters[i]))-len(str(headers[i])))*" "+"|")
+    rows.append(row_second)
+
+    for element in table:
+        row_second = ["|"]
+        for i in range(len(element)):
+            row_second.append("  "+element[i]+((len(str(counters[i]))-len(str(element[i])))*" ")+"|")
+        rows.append(row_second)
+        
+    
 
     print("/"+(sum_counters*"-")+"\\")
-    print(' '.join(headers))
-    for data in table:
-        print('            '.join(data))
+    for data in rows:
+        print(''.join(data))
     print("\\"+(sum_counters*"-")+"/")
 
 
