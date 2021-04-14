@@ -2,7 +2,9 @@ from model.crm import crm
 from view import terminal as view
 
 
+
 def list_customers():
+    
     view.print_error_message("Not implemented yet.")
 
 

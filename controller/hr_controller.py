@@ -1,8 +1,17 @@
 from model.hr import hr
 from view import terminal as view
 
+def read_file(file_name)
+    employees = []
+    with open(file_name, 'r') as file_handle:
+        for line in file_handle.readlines():
+            line = line.replace("\n","").replace("\r", "")
+            line = line.split("\t")
+            employees.append(line)
+    return employees
 
 def list_employees():
+    
     view.print_error_message("Not implemented yet.")
 
 
