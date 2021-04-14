@@ -29,14 +29,28 @@ def print_general_results(result, label):
 # |   0    |  Bazooka   | portable |
 # |--------|------------|----------|
 # |   1    | Sidewinder | missile  |
-# \-----------------------------------/
-def print_table(table):
-    """Prints tabular data like above.
+# \--------------------------------/
+def print_table(table, headers):
+    counters = []
+    for i in range(len(headers)): 
+        counters.append(len(str(headers[i])))
+    
+    for element in table:
+        for i in range(len(element)):
+            if len(element[i]) > len(str(counters[i])):
+                counters[i] = element[i]
+    sum_counters = len(headers)*4
+    
+    for element in counters:
+        sum_counters += len(str(element))
 
-    Args:
-        table: list of lists - the table to print out
-    """
-    pass
+    
+
+    print("/"+(sum_counters*"-")+"\\")
+    print('   '.join(headers))
+    for data in table:
+        print('            '.join(data))
+    print("\\"+(sum_counters*"-")+"/")
 
 
 def get_input(label):
