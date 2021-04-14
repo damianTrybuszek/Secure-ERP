@@ -33,7 +33,7 @@ def print_general_results(result, label):
 def print_table(table, headers):
     counters = []
     for i in range(len(headers)): 
-        counters.append(len(str(headers[i])))
+        counters.append(headers[i])
     
     for element in table:
         for i in range(len(element)):
@@ -47,10 +47,10 @@ def print_table(table, headers):
     cols_width = ["|"]
 
     for element in counters:
-        cols_width.append((len(str(element))+4)*"-"+"|")
+        cols_width.append((len(str(element))+6)*"-"+"|")
 
 
-    rows = ["|"]
+    rows = []
     row_second = ["|"]
 
     for i  in range(len(headers)):
@@ -60,7 +60,7 @@ def print_table(table, headers):
     for element in table:
         row_second = ["|"]
         for i in range(len(element)):
-            row_second.append("  "+element[i]+((len(str(counters[i]))-len(str(element[i])))*" ")+"|")
+            row_second.append("  "+element[i]+(len(str(counters[i]))-len(str(element[i])))*" "+"|")
         rows.append(row_second)
         
     
