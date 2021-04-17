@@ -1,21 +1,45 @@
 from model.sales import sales
 from view import terminal as view
+from model import data_manager as file_handling
 
 
 def list_transactions():
-    view.print_error_message("Not implemented yet.")
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    view.print_table(lines, sales.HEADERS)
 
 
 def add_transaction():
-    view.print_error_message("Not implemented yet.")
-
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    add_transaction_list = []
+    for i in range(len(sales.HEADERS)):
+        user_input = view.get_input(sales.HEADERS[i])
+        add_transaction_list.append(user_input)
+    lines.append(add_transaction_list)
+    file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
+    
 
 def update_transaction():
-    view.print_error_message("Not implemented yet.")
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    user_input_id = view.get_input(sales.HEADERS[0])
+    for line in range(len(lines)):
+        if user_input_id == lines[line][0]:
+            for i in range(len(sales.HEADERS) - 1):
+                user_input_update = view.get_input(sales.HEADERS[i + 1])
+                lines[line][i + 1] = user_input_update
+    if user_input_id != lines[line][0]:
+        view.print_message("There is no such transaction with this Id")
+    file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
 
 
 def delete_transaction():
-    view.print_error_message("Not implemented yet.")
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    user_input_id = view.get_input(sales.HEADERS[0])
+    for line in range(len(lines)):
+        if user_input_id == lines[line][0]:
+            lines.pop(line)
+            return file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
+    if user_input_id != lines[line][0]:
+        view.print_message("There is no such transaction with this Id")
 
 
 def get_biggest_revenue_transaction():
