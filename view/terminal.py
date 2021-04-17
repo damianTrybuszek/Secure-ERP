@@ -81,8 +81,9 @@ def get_input(label):
 
 
 def get_inputs(labels):
-    user_input = input(f"\n{labels}: ")
-    return user_input
+    
+    user_inputs = input(f"\n{labels}: ")
+    return user_inputs
 
 
 def print_error_message(message):

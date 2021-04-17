@@ -1,4 +1,4 @@
-from controller import main_controller
+from controller import main_controller, crm_controller
 
 
 if __name__ == '__main__':

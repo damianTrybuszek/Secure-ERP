@@ -1,6 +1,7 @@
 from model.crm import crm
 from view import terminal as view
 from model import data_manager as d_man
+from model import util
 
 
 def list_customers():
@@ -11,9 +12,29 @@ def list_customers():
 
 
 def add_customer():
-    view.print_error_message("Not implemented yet.")
+    # table = [[tab1],[tab2],[tab3],[tab4]]
 
+    id = util.generate_id()
 
+    is_looping = True
+
+    while is_looping:
+
+        [name, email, subscript] = view.get_inputs("Please provide name, email and subscription status:  ")
+
+        if len(name) < 4:
+            raise NameError("Try to provide correct name\n")
+        elif "@" not in email:
+            raise NameError("Try to provide correct email\n")
+        elif  subscript != "0" and subscript !="1":
+            raise ValueError("Subscription status supposed to be 0 or 1.\n")
+        is_looping = False
+
+    table = [[id],[name],[email],[subscript]]
+    
+    d_man.write_table_to_file(crm.DATAFILE, table, separator=';')
+
+ 
 def update_customer():
     view.print_error_message("Not implemented yet.")
 
