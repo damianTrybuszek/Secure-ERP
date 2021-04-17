@@ -52,8 +52,9 @@ def get_biggest_revenue_transaction():
     lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
     biggest_revenue_transaction_list = []
     try:
+        biggest_revenue_transaction = float(lines[ID_INDEX][PRICE_INDEX])
         for line in range(len(lines)):
-            if float(lines[line][PRICE_INDEX]) < float(lines[line + 1][PRICE_INDEX]):
+            if biggest_revenue_transaction < float(lines[line + 1][PRICE_INDEX]):
                 biggest_revenue_transaction = float(lines[line + 1][PRICE_INDEX])
     except IndexError:
         for line in range(len(lines)):
@@ -62,13 +63,22 @@ def get_biggest_revenue_transaction():
                 view.print_table(biggest_revenue_transaction_list, sales.HEADERS)
 
 
-
-
-
-
-
 def get_biggest_revenue_product():
-    view.print_error_message("Not implemented yet.")
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    try:
+        biggest_revenue_transaction = float(lines[ID_INDEX][PRICE_INDEX])
+        for line in range(len(lines)):
+            if biggest_revenue_transaction < float(lines[line + 1][PRICE_INDEX]):
+                biggest_revenue_transaction = float(lines[line + 1][PRICE_INDEX])
+    except IndexError:
+        for line in range(len(lines)):
+            if biggest_revenue_transaction == float(lines[line][PRICE_INDEX]):
+                view.print_message("The biggest revenue product is " + f"'{lines[line][PRODUCT_INDEX]}'")
+
+
+
+    
+
 
 
 def count_transactions_between():
