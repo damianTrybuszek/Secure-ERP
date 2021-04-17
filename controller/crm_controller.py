@@ -6,7 +6,7 @@ from model import util
 ID_INDEX = 0
 NAME_INDEX = 1
 EMAIL_INDEX = 2
-SUBSCRIPTION_STATUS = 3
+SUBSCRIPTION_INDEX = 3
 
 
 
@@ -29,9 +29,9 @@ def add_customer():
 
     while is_looping:
 
-        [table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_STATUS]] = view.get_inputs("Please provide name, email and subscription status")
+        [table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_INDEX]] = view.get_inputs("Please provide name, email and subscription status")
 
-        if len(table[NAME_INDEX]) < 4 or "@" not in table[EMAIL_INDEX] or "." not in table[EMAIL_INDEX] or table[SUBSCRIPTION_STATUS] not in ["0","1"]:
+        if len(table[NAME_INDEX]) < 4 or "@" not in table[EMAIL_INDEX] or "." not in table[EMAIL_INDEX] or table[SUBSCRIPTION_INDEX] not in ["0","1"]:
             view.print_error_message("Please provide correct data!")
         else:
             is_looping = False
@@ -51,15 +51,15 @@ def update_customer():
     for element in lines:
         if element[ID_INDEX] == table[ID_INDEX]:
             while is_looping:
-                [table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_STATUS]] = view.get_inputs("Please provide name, email and subscription status")
-                if len(table[NAME_INDEX]) < 4 or "@" not in table[EMAIL_INDEX] or "." not in table[EMAIL_INDEX] or table[SUBSCRIPTION_STATUS] not in ["0","1"]:
+                [table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_INDEX]] = view.get_inputs("Please provide name, email and subscription status")
+                if len(table[NAME_INDEX]) < 4 or "@" not in table[EMAIL_INDEX] or "." not in table[EMAIL_INDEX] or table[SUBSCRIPTION_INDEX] not in ["0","1"]:
                     view.print_error_message("Please provide correct data!")
                 else:
                     is_looping = False
 
             element[NAME_INDEX] = table[NAME_INDEX]
             element[EMAIL_INDEX] = table[EMAIL_INDEX]
-            element[SUBSCRIPTION_STATUS] = table[SUBSCRIPTION_STATUS]
+            element[SUBSCRIPTION_INDEX] = table[SUBSCRIPTION_INDEX]
             d_man.write_table_to_file(crm.DATAFILE, lines, separator=';')
     if is_looping:
         view.print_error_message("There is no such ID.")
@@ -68,11 +68,36 @@ def update_customer():
 
 
 def delete_customer():
-    view.print_error_message("Not implemented yet.")
+    lines = d_man.read_table_from_file(crm.DATAFILE, separator=';')
+    table = ['']
+
+    table[ID_INDEX] = view.get_input("Please input user ID")
+    is_looping =True
+
+    for element in lines:
+        if element[ID_INDEX] == table[ID_INDEX]:
+            lines.remove(element)
+            d_man.write_table_to_file(crm.DATAFILE, lines, separator=';')
+            is_looping = False
+
+    if is_looping:
+        view.print_error_message("There is no such ID.")
 
 
 def get_subscribed_emails():
-    view.print_error_message("Not implemented yet.")
+    lines = d_man.read_table_from_file(crm.DATAFILE, separator=';')
+    
+    subscribed_emails_list = []
+
+    for element in lines:
+        if element[SUBSCRIPTION_INDEX] == "1":
+            subscribed_emails_list.append(element[EMAIL_INDEX])
+    
+    if len(subscribed_emails_list) > 0:
+        view.print_general_results(subscribed_emails_list, "Subscribed Emails:")
+    else:
+        view.print_error_message("There are no subscribed emails!")
+
 
 
 def run_operation(option):
