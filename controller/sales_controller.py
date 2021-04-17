@@ -2,6 +2,12 @@ from model.sales import sales
 from view import terminal as view
 from model import data_manager as file_handling
 
+ID_INDEX = 0
+CUSTOMER_INDEX = 1
+PRODUCT_INDEX = 2
+PRICE_INDEX = 3
+DATE_INDEX = 4
+
 
 def list_transactions():
     lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
@@ -43,7 +49,22 @@ def delete_transaction():
 
 
 def get_biggest_revenue_transaction():
-    view.print_error_message("Not implemented yet.")
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    try:
+        for line in range(len(lines)):
+            if float(lines[line][PRICE_INDEX]) < float(lines[line + 1][PRICE_INDEX]):
+                biggest_revenue_transaction = float(lines[line + 1][PRICE_INDEX])
+    except IndexError:
+        for line in range(len(lines)):
+            if biggest_revenue_transaction == float(lines[line][PRICE_INDEX]):
+                biggest_revenue_transaction_list = []
+                biggest_revenue_transaction_list.append(lines[line])
+                view.print_table(biggest_revenue_transaction_list, sales.HEADERS)
+
+
+
+
+
 
 
 def get_biggest_revenue_product():
