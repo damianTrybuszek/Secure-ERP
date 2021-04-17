@@ -82,7 +82,7 @@ def get_input(label):
 
 def get_inputs(labels):
     
-    user_inputs = input(f"\n{labels}: ")
+    user_inputs = input(f"\n{labels}: ").split()
     return user_inputs
 
 

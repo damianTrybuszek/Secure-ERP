@@ -3,6 +3,12 @@ from view import terminal as view
 from model import data_manager as d_man
 from model import util
 
+ID_INDEX = 0
+NAME_INDEX = 1
+EMAIL_INDEX = 2
+SUBSCRIPTION_STATUS = 3
+
+
 
 def list_customers():
 
@@ -12,31 +18,51 @@ def list_customers():
 
 
 def add_customer():
-    # table = [[tab1],[tab2],[tab3],[tab4]]
 
-    id = util.generate_id()
+    lines = d_man.read_table_from_file(crm.DATAFILE, separator=';')
+
+    table = ["","","",""]
+
+    table[ID_INDEX] = util.generate_id()
 
     is_looping = True
 
     while is_looping:
 
-        [name, email, subscript] = view.get_inputs("Please provide name, email and subscription status:  ")
+        [table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_STATUS]] = view.get_inputs("Please provide name, email and subscription status")
 
-        if len(name) < 4:
-            raise NameError("Try to provide correct name\n")
-        elif "@" not in email:
-            raise NameError("Try to provide correct email\n")
-        elif  subscript != "0" and subscript !="1":
-            raise ValueError("Subscription status supposed to be 0 or 1.\n")
-        is_looping = False
+        if len(table[NAME_INDEX]) < 4 or "@" not in table[EMAIL_INDEX] or "." not in table[EMAIL_INDEX] or table[SUBSCRIPTION_STATUS] not in ["0","1"]:
+            view.print_error_message("Please provide correct data!")
+        else:
+            is_looping = False
 
-    table = [[id],[name],[email],[subscript]]
+    lines.append(table)
     
-    d_man.write_table_to_file(crm.DATAFILE, table, separator=';')
+    d_man.write_table_to_file(crm.DATAFILE, lines, separator=';')
 
  
 def update_customer():
-    view.print_error_message("Not implemented yet.")
+    lines = d_man.read_table_from_file(crm.DATAFILE, separator=';')
+    table = ["","","",""]
+
+    table[ID_INDEX] = view.get_input("Please input user ID: ")
+    is_looping = True
+    
+    for element in lines:
+        if element[ID_INDEX] == table[ID_INDEX]:
+            while is_looping:
+                [table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_STATUS]] = view.get_inputs("Please provide name, email and subscription status")
+                if len(table[NAME_INDEX]) < 4 or "@" not in table[EMAIL_INDEX] or "." not in table[EMAIL_INDEX] or table[SUBSCRIPTION_STATUS] not in ["0","1"]:
+                    view.print_error_message("Please provide correct data!")
+                else:
+                    is_looping = False
+
+            element[NAME_INDEX] = table[NAME_INDEX]
+            element[EMAIL_INDEX] = table[EMAIL_INDEX]
+            element[SUBSCRIPTION_STATUS] = table[SUBSCRIPTION_STATUS]
+
+    if is_looping == False:
+        d_man.write_table_to_file(crm.DATAFILE, lines, separator=';')
 
 
 def delete_customer():

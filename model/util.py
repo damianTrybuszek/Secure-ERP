@@ -13,11 +13,11 @@ def generate_id(number_of_small_letters=4,
     for i in range(10):
         if i in range(0,4):
             id_list.append(random.choice(string.ascii_lowercase))
-        if i in range(4,6):
+        elif i in range(4,6):
             id_list.append(random.choice(string.ascii_uppercase))
-        if i in range(6,8):
+        elif i in range(6,8):
             id_list.append(random.choice(string.digits))
-        if i in range(8,10):
+        elif i in range(8,10):
             id_list.append(random.choice(allowed_special_chars))
         
     id = []
