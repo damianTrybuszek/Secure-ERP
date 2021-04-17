@@ -26,30 +26,31 @@ def add_transaction():
 
 def update_transaction():
     lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
-    user_input_id = view.get_input(sales.HEADERS[0])
+    user_input_id = view.get_input(sales.HEADERS[ID_INDEX])
     for line in range(len(lines)):
-        if user_input_id == lines[line][0]:
+        if user_input_id == lines[line][ID_INDEX]:
             for i in range(len(sales.HEADERS) - 1):
                 user_input_update = view.get_input(sales.HEADERS[i + 1])
                 lines[line][i + 1] = user_input_update
-    if user_input_id != lines[line][0]:
+    if user_input_id != lines[line][ID_INDEX]:
         view.print_message("There is no such transaction with this Id")
     file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
 
 
 def delete_transaction():
     lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
-    user_input_id = view.get_input(sales.HEADERS[0])
+    user_input_id = view.get_input(sales.HEADERS[ID_INDEX])
     for line in range(len(lines)):
-        if user_input_id == lines[line][0]:
+        if user_input_id == lines[line][ID_INDEX]:
             lines.pop(line)
             return file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
-    if user_input_id != lines[line][0]:
+    if user_input_id != lines[line][ID_INDEX]:
         view.print_message("There is no such transaction with this Id")
 
 
 def get_biggest_revenue_transaction():
     lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    biggest_revenue_transaction_list = []
     try:
         for line in range(len(lines)):
             if float(lines[line][PRICE_INDEX]) < float(lines[line + 1][PRICE_INDEX]):
@@ -57,7 +58,6 @@ def get_biggest_revenue_transaction():
     except IndexError:
         for line in range(len(lines)):
             if biggest_revenue_transaction == float(lines[line][PRICE_INDEX]):
-                biggest_revenue_transaction_list = []
                 biggest_revenue_transaction_list.append(lines[line])
                 view.print_table(biggest_revenue_transaction_list, sales.HEADERS)
 
