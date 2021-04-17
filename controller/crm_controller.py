@@ -45,7 +45,7 @@ def update_customer():
     lines = d_man.read_table_from_file(crm.DATAFILE, separator=';')
     table = ["","","",""]
 
-    table[ID_INDEX] = view.get_input("Please input user ID: ")
+    table[ID_INDEX] = view.get_input("Please input user ID")
     is_looping = True
     
     for element in lines:
@@ -60,9 +60,11 @@ def update_customer():
             element[NAME_INDEX] = table[NAME_INDEX]
             element[EMAIL_INDEX] = table[EMAIL_INDEX]
             element[SUBSCRIPTION_STATUS] = table[SUBSCRIPTION_STATUS]
+            d_man.write_table_to_file(crm.DATAFILE, lines, separator=';')
+    if is_looping:
+        view.print_error_message("There is no such ID.")
 
-    if is_looping == False:
-        d_man.write_table_to_file(crm.DATAFILE, lines, separator=';')
+
 
 
 def delete_customer():
