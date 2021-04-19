@@ -21,7 +21,20 @@ def print_general_results(result, label):
     lists/tuples (like "@label: \n  @item1; @item2"), and dictionaries
     (like "@label \n  @key1: @value1; @key2: @value2")
     """
-    pass
+    print(label)
+
+    print_list = []
+    
+    if isinstance(result, tuple) or isinstance(result, list):
+        print('; '.join(result))
+        
+    elif isinstance(result, dict):
+        for results in result:
+            print_list.append([results.keys(), ": ", results.value()])
+        print(';'.join(print_list))
+    
+    elif result.isdigit():
+        print("{:.2f}".format(float(result)))
 
 # /--------------------------------\
 # |   id   |   product  |   type   |

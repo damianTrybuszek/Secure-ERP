@@ -6,8 +6,8 @@ from model import util
 ID_INDEX = 0
 NAME_INDEX = 1
 DATE_OF_BIRTH = 2
-SUBSCRIPTION_INDEX = 3
-
+DEPARTMENT = 3
+CLEARANCE_LEVEL = 4
 
 def list_employees():
     
@@ -20,13 +20,15 @@ def add_employee():
     
     lines = d_man.read_table_from_file(hr.DATAFILE, separator=';')
 
-    table = ["","",""]
+    table = ["","","","",""]
 
-    table[ID_INDEX] = util.generate_id
+    table[ID_INDEX] = util.generate_id()
+    
+    is_looping = True
 
     while is_looping:
-        [table[NAME_INDEX],table[EMAIL_INDEX], table[SUBSCRIPTION_INDEX]] = view.get_inputs("Please provide name, email and subscription status")
-
+        [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]] = view.get_inputs("Please provide name, date of birth, department and clearance level status")
+        if len(table[NAME_INDEX]) < 4 or table(CLEARANCE_LEVEL) not in int(["0","1","2"]
 
 def update_employee():
     view.print_error_message("Not implemented yet.")
