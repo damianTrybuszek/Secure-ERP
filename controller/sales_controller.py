@@ -80,47 +80,12 @@ def get_biggest_revenue_product():
                 view.print_message("The biggest revenue product is " + f"'{lines[line][PRODUCT_INDEX]}'")
 
 
-def count_transactions_between():
+def count_and_sum_transactions():
     lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
     user_input_start_date = view.get_input(sales.HEADERS[DATE_INDEX])
     user_input_end_date = view.get_input(sales.HEADERS[DATE_INDEX])
     user_range_date_list = [user_input_start_date, user_input_end_date]
     counter = 0
-    
-    for line in range(len(lines)):
-        transaction_date = lines[line][DATE_INDEX]
-        month_of_user_input_start_date = months.get(user_range_date_list[0][5:7])
-        month_of_user_input_end_date = months.get(user_range_date_list[1][5:7])
-        month_of_transaction = months.get(transaction_date[5:7])
-        day_of_user_input_start_date = days.get(user_range_date_list[0][8:10])
-        day_of_user_input_end_date  = days.get(user_range_date_list[1][8:10])
-        day_of_transaction = days.get(transaction_date[8:10])
-
-        if user_range_date_list[0][0:4] < transaction_date[0:4] and transaction_date[0:4] < user_range_date_list[1][0:4]:
-            counter += 1
-        elif user_range_date_list[0][0:4] == transaction_date[0:4] or transaction_date[0:4] == user_range_date_list[1][0:4]:
-            if user_range_date_list[0][0:4] == transaction_date[0:4]:
-                if month_of_user_input_start_date <= month_of_transaction:
-                    if month_of_user_input_start_date < month_of_transaction:
-                        counter += 1
-                    else:
-                        if day_of_user_input_start_date <= day_of_transaction:
-                            counter += 1
-            if transaction_date[0:4] == user_range_date_list[1][0:4]:
-                if month_of_transaction <= month_of_user_input_end_date:
-                    if month_of_transaction < month_of_user_input_end_date:
-                        counter += 1
-                    else:
-                        if day_of_transaction <= day_of_user_input_end_date:
-                            counter += 1
-    view.print_message(f"The number of transactions carried out during the specified time period: {counter}")
-
-
-def sum_transactions_between():
-    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
-    user_input_start_date = view.get_input(sales.HEADERS[DATE_INDEX])
-    user_input_end_date = view.get_input(sales.HEADERS[DATE_INDEX])
-    user_range_date_list = [user_input_start_date, user_input_end_date]
     sum_of_transactions = 0
     
     for line in range(len(lines)):
@@ -131,28 +96,45 @@ def sum_transactions_between():
         day_of_user_input_start_date = days.get(user_range_date_list[0][8:10])
         day_of_user_input_end_date  = days.get(user_range_date_list[1][8:10])
         day_of_transaction = days.get(transaction_date[8:10])
-
+        
         if user_range_date_list[0][0:4] < transaction_date[0:4] and transaction_date[0:4] < user_range_date_list[1][0:4]:
+            counter += 1
             sum_of_transactions = float(sum_of_transactions) + float(lines[line][PRICE_INDEX])
-
         elif user_range_date_list[0][0:4] == transaction_date[0:4] or transaction_date[0:4] == user_range_date_list[1][0:4]:
             if user_range_date_list[0][0:4] == transaction_date[0:4]:
                 if month_of_user_input_start_date <= month_of_transaction:
                     if month_of_user_input_start_date < month_of_transaction:
+                        counter += 1
                         sum_of_transactions = float(sum_of_transactions) + float(lines[line][PRICE_INDEX])
                     else:
                         if day_of_user_input_start_date <= day_of_transaction:
+                            counter += 1
                             sum_of_transactions = float(sum_of_transactions) + float(lines[line][PRICE_INDEX])
             if transaction_date[0:4] == user_range_date_list[1][0:4]:
                 if month_of_transaction <= month_of_user_input_end_date:
                     if month_of_transaction < month_of_user_input_end_date:
+                        counter += 1
                         sum_of_transactions = float(sum_of_transactions) + float(lines[line][PRICE_INDEX])
                     else:
                         if day_of_transaction <= day_of_user_input_end_date:
+                            counter += 1
                             sum_of_transactions = float(sum_of_transactions) + float(lines[line][PRICE_INDEX])
+    return counter, sum_of_transactions
+
+
+def count_transactions_between():
+
+    transactions_operation = count_and_sum_transactions()
+    counter = transactions_operation[0]
+    view.print_message(f"The number of transactions carried out during the specified time period: {counter}")
+
+
+def sum_transactions_between():
+    
+    transactions_operation = count_and_sum_transactions()
+    sum_of_transactions = transactions_operation[1]
     view.print_message(f"The sum of transactions carried out during the specified time period: {sum_of_transactions}")
     
-
 
 def run_operation(option):
     if option == 1:
