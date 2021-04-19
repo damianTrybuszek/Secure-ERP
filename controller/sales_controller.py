@@ -54,9 +54,8 @@ def delete_transaction():
         view.print_message("There is no such transaction with this Id")
 
 
-def get_biggest_revenue_transaction():
+def biggest_revenue_product_and_transaction():
     lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
-    biggest_revenue_transaction_list = []
     try:
         biggest_revenue_transaction = float(lines[ID_INDEX][PRICE_INDEX])
         for line in range(len(lines)):
@@ -65,21 +64,21 @@ def get_biggest_revenue_transaction():
     except IndexError:
         for line in range(len(lines)):
             if biggest_revenue_transaction == float(lines[line][PRICE_INDEX]):
-                biggest_revenue_transaction_list.append(lines[line])
-                view.print_table(biggest_revenue_transaction_list, sales.HEADERS)
+                return line
+                    
+
+def get_biggest_revenue_transaction():
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    biggest_revenue_transaction_list = []
+    line_of_biggest_revenue_transaction = biggest_revenue_product_and_transaction()
+    biggest_revenue_transaction_list.append(lines[line_of_biggest_revenue_transaction])
+    view.print_table(biggest_revenue_transaction_list, sales.HEADERS)
 
 
 def get_biggest_revenue_product():
     lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
-    try:
-        biggest_revenue_transaction = float(lines[ID_INDEX][PRICE_INDEX])
-        for line in range(len(lines)):
-            if biggest_revenue_transaction < float(lines[line + 1][PRICE_INDEX]):
-                biggest_revenue_transaction = float(lines[line + 1][PRICE_INDEX])
-    except IndexError:
-        for line in range(len(lines)):
-            if biggest_revenue_transaction == float(lines[line][PRICE_INDEX]):
-                view.print_message("The biggest revenue product is " + f"'{lines[line][PRODUCT_INDEX]}'")
+    line_of_biggest_revenue_product = biggest_revenue_product_and_transaction()
+    view.print_message("The biggest revenue product is " + f"'{lines[line_of_biggest_revenue_product][PRODUCT_INDEX]}'")
 
 
 def count_and_sum_transactions():
@@ -125,16 +124,14 @@ def count_and_sum_transactions():
 
 
 def count_transactions_between():
-
-    transaction_operation = count_and_sum_transactions()
-    counter = transaction_operation[FIRST_POSITION_ON_LIST]
+    transactions_operation = count_and_sum_transactions()
+    counter = transactions_operation[FIRST_POSITION_ON_LIST]
     view.print_message(f"The number of transactions carried out during the specified time period: {counter}")
 
 
-def sum_transactions_between():
-    
-    transaction_operation = count_and_sum_transactions()
-    sum_of_transactions = transaction_operation[SECOND_POSITION_ON_LIST]
+def sum_transactions_between(): 
+    transactions_operation = count_and_sum_transactions()
+    sum_of_transactions = transactions_operation[SECOND_POSITION_ON_LIST]
     view.print_message(f"The sum of transactions carried out during the specified time period: {sum_of_transactions}")
     
 
