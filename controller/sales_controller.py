@@ -7,6 +7,8 @@ CUSTOMER_INDEX = 1
 PRODUCT_INDEX = 2
 PRICE_INDEX = 3
 DATE_INDEX = 4
+FIRST_POSITION_ON_LIST = 0
+SECOND_POSITION_ON_LIST = 1
 months = dict({"01": 1, "02": 2, "03": 3, "04": 4, "05": 5, "06": 6, "07": 7, "08": 8, "09": 9, "10": 10, "11": 11, "12": 12})
 days = dict({"01": 1, "02": 2, "03": 3, "04": 4, "05": 5, "06": 6, "07": 7, "08": 8, "09": 9, "10": 10,
              "11": 11, "12": 12, "13": 13, "14": 14, "15": 15, "16": 16, "17": 17, "18": 18, "19": 19, "20": 20,
@@ -90,27 +92,27 @@ def count_and_sum_transactions():
     
     for line in range(len(lines)):
         transaction_date = lines[line][DATE_INDEX]
-        month_of_user_input_start_date = months.get(user_range_date_list[0][5:7])
-        month_of_user_input_end_date = months.get(user_range_date_list[1][5:7])
+        month_of_user_input_start_date = months.get(user_range_date_list[FIRST_POSITION_ON_LIST][5:7])
+        month_of_user_input_end_date = months.get(user_range_date_list[SECOND_POSITION_ON_LIST][5:7])
         month_of_transaction = months.get(transaction_date[5:7])
-        day_of_user_input_start_date = days.get(user_range_date_list[0][8:10])
-        day_of_user_input_end_date  = days.get(user_range_date_list[1][8:10])
+        day_of_user_input_start_date = days.get(user_range_date_list[FIRST_POSITION_ON_LIST][8:10])
+        day_of_user_input_end_date  = days.get(user_range_date_list[SECOND_POSITION_ON_LIST][8:10])
         day_of_transaction = days.get(transaction_date[8:10])
         
-        if user_range_date_list[0][0:4] < transaction_date[0:4] and transaction_date[0:4] < user_range_date_list[1][0:4]:
+        if transaction_date[0:4] > user_range_date_list[FIRST_POSITION_ON_LIST][0:4] and transaction_date[0:4] < user_range_date_list[SECOND_POSITION_ON_LIST][0:4]:
             counter += 1
             sum_of_transactions = float(sum_of_transactions) + float(lines[line][PRICE_INDEX])
-        elif user_range_date_list[0][0:4] == transaction_date[0:4] or transaction_date[0:4] == user_range_date_list[1][0:4]:
-            if user_range_date_list[0][0:4] == transaction_date[0:4]:
-                if month_of_user_input_start_date <= month_of_transaction:
-                    if month_of_user_input_start_date < month_of_transaction:
+        elif transaction_date[0:4] == user_range_date_list[FIRST_POSITION_ON_LIST][0:4] or transaction_date[0:4] == user_range_date_list[SECOND_POSITION_ON_LIST][0:4]:
+            if transaction_date[0:4] == user_range_date_list[FIRST_POSITION_ON_LIST][0:4]:
+                if month_of_transaction >= month_of_user_input_start_date:
+                    if month_of_transaction > month_of_user_input_start_date:
                         counter += 1
                         sum_of_transactions = float(sum_of_transactions) + float(lines[line][PRICE_INDEX])
                     else:
-                        if day_of_user_input_start_date <= day_of_transaction:
+                        if day_of_transaction >= day_of_user_input_start_date:
                             counter += 1
                             sum_of_transactions = float(sum_of_transactions) + float(lines[line][PRICE_INDEX])
-            if transaction_date[0:4] == user_range_date_list[1][0:4]:
+            if transaction_date[0:4] == user_range_date_list[SECOND_POSITION_ON_LIST][0:4]:
                 if month_of_transaction <= month_of_user_input_end_date:
                     if month_of_transaction < month_of_user_input_end_date:
                         counter += 1
@@ -124,15 +126,15 @@ def count_and_sum_transactions():
 
 def count_transactions_between():
 
-    transactions_operation = count_and_sum_transactions()
-    counter = transactions_operation[0]
+    transaction_operation = count_and_sum_transactions()
+    counter = transaction_operation[FIRST_POSITION_ON_LIST]
     view.print_message(f"The number of transactions carried out during the specified time period: {counter}")
 
 
 def sum_transactions_between():
     
-    transactions_operation = count_and_sum_transactions()
-    sum_of_transactions = transactions_operation[1]
+    transaction_operation = count_and_sum_transactions()
+    sum_of_transactions = transaction_operation[SECOND_POSITION_ON_LIST]
     view.print_message(f"The sum of transactions carried out during the specified time period: {sum_of_transactions}")
     
 
