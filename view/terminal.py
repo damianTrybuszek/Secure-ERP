@@ -1,26 +1,18 @@
 def print_menu(title, list_options):
-    """Prints options in standard menu format like this:
 
-    Main menu:
-    (1) Store manager
-    (2) Human resources manager
-    (3) Inventory manager
-    (0) Exit program
+    print(f"\n{title}\n")
+    for i in range(1, len(list_options)):
+        print(f"({i}) {list_options[i]}")
+    print(f"(0) {list_options[0]}")
 
-    Args:
-        title (str): the title of the menu (first row)
-        list_options (list): list of the menu options (listed starting from 1, 0th element goes to the end)
-    """
-    pass
+    # Args:
+    #     title (str): the title of the menu (first row)
+    #     list_options (list): list of the menu options (listed starting from 1, 0th element goes to the end)
+
 
 
 def print_message(message):
-    """Prints a single message to the terminal.
-
-    Args:
-        message: str - the message
-    """
-    pass
+    print(f"\n{message} \n")
 
 
 def print_general_results(result, label):
@@ -31,45 +23,46 @@ def print_general_results(result, label):
     """
     pass
 
-
 # /--------------------------------\
 # |   id   |   product  |   type   |
 # |--------|------------|----------|
 # |   0    |  Bazooka   | portable |
 # |--------|------------|----------|
 # |   1    | Sidewinder | missile  |
-# \-----------------------------------/
-def print_table(table):
-    """Prints tabular data like above.
+# \--------------------------------/
+def print_table(table, headers):
+    counters = []
+    for i in range(len(headers)): 
+        counters.append(len(str(headers[i])))
+    
+    for element in table:
+        for i in range(len(element)):
+            if len(element[i]) > len(str(counters[i])):
+                counters[i] = element[i]
+    sum_counters = len(headers)*4
+    
+    for element in counters:
+        sum_counters += len(str(element))
 
-    Args:
-        table: list of lists - the table to print out
-    """
-    pass
+    
+
+    print("/"+(sum_counters*"-")+"\\")
+    print('   '.join(headers))
+    for data in table:
+        print('            '.join(data))
+    print("\\"+(sum_counters*"-")+"/")
 
 
 def get_input(label):
-    """Gets single string input from the user.
-
-    Args:
-        label: str - the label before the user prompt
-    """
-    pass
+    user_input = input(f"\n{label}: ")
+    return user_input
 
 
 def get_inputs(labels):
-    """Gets a list of string inputs from the user.
-
-    Args:
-        labels: list - the list of the labels to be displayed before each prompt
-    """
-    pass
+    user_input = input(f"\n{labels}: ")
+    return user_input
 
 
 def print_error_message(message):
-    """Prints an error message to the terminal.
+    print(f"\n{message} \n")
 
-    Args:
-        message: str - the error message
-    """
-    pass

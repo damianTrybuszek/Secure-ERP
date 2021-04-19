@@ -1,22 +1,31 @@
 from model.hr import hr
 from view import terminal as view
+from model import data_manager as d_man
+from model import util
 
-def read_file(file_name)
-    employees = []
-    with open(file_name, 'r') as file_handle:
-        for line in file_handle.readlines():
-            line = line.replace("\n","").replace("\r", "")
-            line = line.split("\t")
-            employees.append(line)
-    return employees
+ID_INDEX = 0
+NAME_INDEX = 1
+DATE_OF_BIRTH = 2
+SUBSCRIPTION_INDEX = 3
+
 
 def list_employees():
     
-    view.print_error_message("Not implemented yet.")
+    lines = d_man.read_table_from_file(hr.DATAFILE, separator=';')
+    
+    view.print_table(lines, hr.HEADERS)
 
 
 def add_employee():
-    view.print_error_message("Not implemented yet.")
+    
+    lines = d_man.read_table_from_file(hr.DATAFILE, separator=';')
+
+    table = ["","",""]
+
+    table[ID_INDEX] = util.generate_id
+
+    while is_looping:
+        [table[NAME_INDEX],table[EMAIL_INDEX], table[SUBSCRIPTION_INDEX]] = view.get_inputs("Please provide name, email and subscription status")
 
 
 def update_employee():

@@ -20,7 +20,7 @@ def display_menu():
                "Customer Relationship Management (CRM)",
                "Sales",
                "Human Resources"]
-    view.print_menu("Main menu", options)
+    view.print_menu("Main menu:", options)
 
 
 def menu():
@@ -28,7 +28,7 @@ def menu():
     while option != '0':
         display_menu()
         try:
-            option = view.get_input("Select module")
+            option = view.get_input("Please select module")
             load_module(int(option))
         except KeyError:
             view.print_error_message("There is no such option!")

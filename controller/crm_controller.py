@@ -1,11 +1,19 @@
 from model.crm import crm
 from view import terminal as view
+from model import data_manager as d_man
 
 
 
 def list_customers():
+<<<<<<< HEAD
     
     view.print_error_message("Not implemented yet.")
+=======
+
+    lines = d_man.read_table_from_file(crm.DATAFILE, separator=';')
+    
+    view.print_table(lines, crm.HEADERS)
+>>>>>>> 2b323b7caaaf4cd98da7ca806c1f49db6946cb46
 
 
 def add_customer():
