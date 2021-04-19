@@ -1,29 +1,84 @@
 from model.sales import sales
 from view import terminal as view
+from model import data_manager as file_handling
+
+ID_INDEX = 0
+CUSTOMER_INDEX = 1
+PRODUCT_INDEX = 2
+PRICE_INDEX = 3
+DATE_INDEX = 4
 
 
 def list_transactions():
-    view.print_error_message("Not implemented yet.")
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    view.print_table(lines, sales.HEADERS)
 
 
 def add_transaction():
-    view.print_error_message("Not implemented yet.")
-
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    add_transaction_list = []
+    for i in range(len(sales.HEADERS)):
+        user_input = view.get_input(sales.HEADERS[i])
+        add_transaction_list.append(user_input)
+    lines.append(add_transaction_list)
+    file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
+    
 
 def update_transaction():
-    view.print_error_message("Not implemented yet.")
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    user_input_id = view.get_input(sales.HEADERS[ID_INDEX])
+    for line in range(len(lines)):
+        if user_input_id == lines[line][ID_INDEX]:
+            for i in range(len(sales.HEADERS) - 1):
+                user_input_update = view.get_input(sales.HEADERS[i + 1])
+                lines[line][i + 1] = user_input_update
+    if user_input_id != lines[line][ID_INDEX]:
+        view.print_message("There is no such transaction with this Id")
+    file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
 
 
 def delete_transaction():
-    view.print_error_message("Not implemented yet.")
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    user_input_id = view.get_input(sales.HEADERS[ID_INDEX])
+    for line in range(len(lines)):
+        if user_input_id == lines[line][ID_INDEX]:
+            lines.pop(line)
+            return file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
+    if user_input_id != lines[line][ID_INDEX]:
+        view.print_message("There is no such transaction with this Id")
 
 
 def get_biggest_revenue_transaction():
-    view.print_error_message("Not implemented yet.")
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    biggest_revenue_transaction_list = []
+    try:
+        biggest_revenue_transaction = float(lines[ID_INDEX][PRICE_INDEX])
+        for line in range(len(lines)):
+            if biggest_revenue_transaction < float(lines[line + 1][PRICE_INDEX]):
+                biggest_revenue_transaction = float(lines[line + 1][PRICE_INDEX])
+    except IndexError:
+        for line in range(len(lines)):
+            if biggest_revenue_transaction == float(lines[line][PRICE_INDEX]):
+                biggest_revenue_transaction_list.append(lines[line])
+                view.print_table(biggest_revenue_transaction_list, sales.HEADERS)
 
 
 def get_biggest_revenue_product():
-    view.print_error_message("Not implemented yet.")
+    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
+    try:
+        biggest_revenue_transaction = float(lines[ID_INDEX][PRICE_INDEX])
+        for line in range(len(lines)):
+            if biggest_revenue_transaction < float(lines[line + 1][PRICE_INDEX]):
+                biggest_revenue_transaction = float(lines[line + 1][PRICE_INDEX])
+    except IndexError:
+        for line in range(len(lines)):
+            if biggest_revenue_transaction == float(lines[line][PRICE_INDEX]):
+                view.print_message("The biggest revenue product is " + f"'{lines[line][PRODUCT_INDEX]}'")
+
+
+
+    
+
 
 
 def count_transactions_between():

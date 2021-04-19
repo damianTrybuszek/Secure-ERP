@@ -10,15 +10,13 @@ DEPARTMENT = 3
 CLEARANCE_LEVEL = 4
 
 def list_employees():
-    
-    lines = d_man.read_table_from_file(hr.DATAFILE, separator=';')
-    
+    lines = hr.get_employees()
     view.print_table(lines, hr.HEADERS)
 
 
 def add_employee():
     
-    lines = d_man.read_table_from_file(hr.DATAFILE, separator=';')
+    lines = data_manager.read_table_from_file(hr.DATAFILE, separator=';')
 
     table = ["","","","",""]
 
@@ -28,14 +26,56 @@ def add_employee():
 
     while is_looping:
         [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]] = view.get_inputs("Please provide name, date of birth, department and clearance level status")
-        if len(table[NAME_INDEX]) < 4 or table(CLEARANCE_LEVEL) not in int(["0","1","2"]
+        #MUST FINISHED
+
+    lines.append(table)
+
+    data_manager.write_table_from_file(hr.DATAFILE, lines, separator=';')
 
 def update_employee():
-    view.print_error_message("Not implemented yet.")
+
+    lines = data_manager.read_table_from_file(hr.DATAFILE, separator=';')
+
+    table = ["","","","",""]
+
+    table[ID_INDEX] = view.get_input("Please input user ID")
+
+    is_looping = True
+
+    for element in lines:
+        if element[ID_INDEX] == table[ID_INDEX]:
+            while is_looping:
+                [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]] = view.get_inputs("Please provide name, date of birth, department and clearance level status")
+            #Must FINISHED
+
+            element[NAME_INDEX] = table[NAME_INDEX]
+            element[DATE_OF_BIRTH] = table[DATE_OF_BIRTH]
+            element[DEPARTMENT] = table[DEPARTMENT]
+            element[CLEARANCE_LEVEL] = table[CLEARANCE_LEVEL]
+
+            data_manager.write_table_to_file(hr.DATAFILE, lines, separator=';')
+
+    if is_looping:
+        view.print_error_message("There is no such ID.")
 
 
 def delete_employee():
-    view.print_error_message("Not implemented yet.")
+    lines = data_manager.read_table_from_file(hr.DATAFILE, separator=';')
+
+    table = ['']
+
+    table[ID_INDEX] =  view.get_input("Please input user ID")
+    is_looping = True
+
+    for element in lines:
+        if element[ID_INDEX] == table[ID_INDEX]:
+            lines.remove(element)
+            data_manager.write_table_from_file(hr.DATAFILE, lines, separator=';')
+            is_looping = False
+    
+    if is_looping:
+        view.print_error_message("There is no such ID.")
+
 
 
 def get_oldest_and_youngest():

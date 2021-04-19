@@ -13,3 +13,6 @@ from model import data_manager, util
 DATAFILE = "model/hr/hr.csv"
 HEADERS = ["Id", "Name", "Date of birth", "Department", "Clearance"]
 
+def get_employees():
+    
+    return lines = data_manager.read_table_from_file(hr.DATAFILE, separator=';')
