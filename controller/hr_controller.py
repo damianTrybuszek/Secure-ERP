@@ -1,6 +1,6 @@
 from model.hr import hr
 from view import terminal as view
-from model import data_manager as d_man
+from model import data_manager
 from model import util
 
 ID_INDEX = 0
@@ -10,76 +10,41 @@ DEPARTMENT = 3
 CLEARANCE_LEVEL = 4
 
 def list_employees():
-    lines = hr.get_employees()
-    view.print_table(lines, hr.HEADERS)
+    employee_list = hr.get_employees()
+    view.print_table(employee_list, hr.HEADERS)
 
 
 def add_employee():
-    
-    lines = data_manager.read_table_from_file(hr.DATAFILE, separator=';')
+    table = hr.TABLE
 
-    table = ["","","","",""]
+    [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]] = view.get_inputs("Please provide name, date of birth, department and clearance level : ")
+    #ADD CONDITIONS
 
-    table[ID_INDEX] = util.generate_id()
-    
-    is_looping = True
+    hr.create_employee(table)
 
-    while is_looping:
-        [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]] = view.get_inputs("Please provide name, date of birth, department and clearance level status")
-        #MUST FINISHED
-
-    lines.append(table)
-
-    data_manager.write_table_from_file(hr.DATAFILE, lines, separator=';')
 
 def update_employee():
 
-    lines = data_manager.read_table_from_file(hr.DATAFILE, separator=';')
+    employee_id = view.get_input("Please input user ID")
+    table = hr.TABLE
 
-    table = ["","","","",""]
+    if hr.is_id_in_base(employee_id):
+        [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]] = view.get_inputs("Please provide name, date of birth, department and clearance level : ")
+        hr.update_employee(employee_id, table)
+    else:
+        view.print_error_message("There is no such id in the base.")
 
-    table[ID_INDEX] = view.get_input("Please input user ID")
-
-    is_looping = True
-
-    for element in lines:
-        if element[ID_INDEX] == table[ID_INDEX]:
-            while is_looping:
-                [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]] = view.get_inputs("Please provide name, date of birth, department and clearance level status")
-            #Must FINISHED
-
-            element[NAME_INDEX] = table[NAME_INDEX]
-            element[DATE_OF_BIRTH] = table[DATE_OF_BIRTH]
-            element[DEPARTMENT] = table[DEPARTMENT]
-            element[CLEARANCE_LEVEL] = table[CLEARANCE_LEVEL]
-
-            data_manager.write_table_to_file(hr.DATAFILE, lines, separator=';')
-
-    if is_looping:
-        view.print_error_message("There is no such ID.")
 
 
 def delete_employee():
-    lines = data_manager.read_table_from_file(hr.DATAFILE, separator=';')
-
-    table = ['']
-
-    table[ID_INDEX] =  view.get_input("Please input user ID")
-    is_looping = True
-
-    for element in lines:
-        if element[ID_INDEX] == table[ID_INDEX]:
-            lines.remove(element)
-            data_manager.write_table_from_file(hr.DATAFILE, lines, separator=';')
-            is_looping = False
-    
-    if is_looping:
-        view.print_error_message("There is no such ID.")
+    employee_id = view.get_input("Please input user ID")
+    deleted_id = hr.delete_employee(employee_id)
+    view.print_message(deleted_id)
 
 
 
 def get_oldest_and_youngest():
-    view.print_error_message("Not implemented yet.")
+    
 
 
 def get_average_age():
