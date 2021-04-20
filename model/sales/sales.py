@@ -12,3 +12,17 @@ from model import data_manager, util
 
 DATAFILE = "model/sales/sales.csv"
 HEADERS = ["Id", "Customer", "Product", "Price", "Date"]
+
+ID_INDEX = 0
+CUSTOMER_INDEX = 1
+PRODUCT_INDEX = 2
+PRICE_INDEX = 3
+DATE_INDEX = 4
+TRANSACTIONS = data_manager.read_table_from_file(DATAFILE, separator=';')
+
+
+def list_of_transactions():
+    return TRANSACTIONS
+
+
+

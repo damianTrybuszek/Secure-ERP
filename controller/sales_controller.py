@@ -16,8 +16,9 @@ days = dict({"01": 1, "02": 2, "03": 3, "04": 4, "05": 5, "06": 6, "07": 7, "08"
 
 
 def list_transactions():
-    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
-    view.print_table(lines, sales.HEADERS)
+
+    list_of_transactions = sales.list_of_transactions()
+    view.print_table(list_of_transactions, sales.HEADERS)
 
 
 def add_transaction():
