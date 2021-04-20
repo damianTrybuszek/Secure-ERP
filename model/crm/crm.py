@@ -9,6 +9,61 @@ Data table structure:
 
 from model import data_manager, util
 
-
 DATAFILE = "model/crm/crm.csv"
 HEADERS = ["id", "name", "email", "subscribed"]
+
+ID_INDEX = 0
+NAME_INDEX = 1
+EMAIL_INDEX = 2
+SUBSCRIPTION_INDEX = 3
+
+TABLE = ["","","",""]
+
+CUSTOMERS = data_manager.read_table_from_file(DATAFILE, separator=';')
+
+def list_the_customers():
+    return data_manager.read_table_from_file(DATAFILE, separator=';')
+
+def add_customers():
+    data_manager.write_table_to_file(DATAFILE, CUSTOMERS, separator=';')
+
+def create_customer():
+    TABLE[ID_INDEX] = util.generate_id()
+    CUSTOMERS.append(TABLE)
+    add_customers()
+
+def is_id_in_base(id):
+    for element in CUSTOMERS:
+        if element[ID_INDEX] == id:
+            return element
+    raise ValueError
+
+def update_customers(element):
+    element[NAME_INDEX] = TABLE[NAME_INDEX]
+    element[EMAIL_INDEX] = TABLE[EMAIL_INDEX]
+    element[SUBSCRIPTION_INDEX] = TABLE[SUBSCRIPTION_INDEX]
+
+def delete_customer(id):
+    for element in CUSTOMERS:
+        if element[ID_INDEX] == id:
+            CUSTOMERS.remove(element)
+            add_customers()
+            return ("Customer deleted")
+    return ("There is no ID in the base")
+
+def get_emails_of_subscribent():
+    subscribed_emails_list = []
+
+    for element in CUSTOMERS:
+        if element[SUBSCRIPTION_INDEX] == "1":
+            subscribed_emails_list.append(element[EMAIL_INDEX])
+    
+    return subscribed_emails_list
+
+
+
+
+
+
+
+
