@@ -27,7 +27,7 @@ def list_the_customers():
 def add_customers():
     data_manager.write_table_to_file(DATAFILE, CUSTOMERS, separator=';')
 
-def create_customer():
+def create_customer(TABLE):
     TABLE[ID_INDEX] = util.generate_id()
     CUSTOMERS.append(TABLE)
     add_customers()
@@ -35,13 +35,17 @@ def create_customer():
 def is_id_in_base(id):
     for element in CUSTOMERS:
         if element[ID_INDEX] == id:
-            return element
-    raise ValueError
+            return True
+    return False
 
-def update_customers(element):
-    element[NAME_INDEX] = TABLE[NAME_INDEX]
-    element[EMAIL_INDEX] = TABLE[EMAIL_INDEX]
-    element[SUBSCRIPTION_INDEX] = TABLE[SUBSCRIPTION_INDEX]
+def update_customers(id, TABLE):
+    for element in CUSTOMERS:
+        if element[ID_INDEX] == id:
+            element[NAME_INDEX] = TABLE[NAME_INDEX]
+            element[EMAIL_INDEX] = TABLE[EMAIL_INDEX]
+            element[SUBSCRIPTION_INDEX] = TABLE[SUBSCRIPTION_INDEX]
+            add_customers()
+            return ("Customer updated")
 
 def delete_customer(id):
     for element in CUSTOMERS:
