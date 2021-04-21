@@ -7,7 +7,6 @@ Data table structure:
     - department (string)
     - clearance level (int): from 0 (lowest) to 7 (highest)
 """
-
 from model import data_manager, util
 
 DATAFILE = "model/hr/hr.csv"

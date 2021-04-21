@@ -44,12 +44,69 @@ def delete_employee():
 
 
 def get_oldest_and_youngest():
+    table = hr.TABLE
+    employees = hr.EMPLOYEES 
     
+    name_of_oldest_user = []
+    year_of_oldest = int(((employees[0][DATE_OF_BIRTH]).split("-"))[0])
+    month_of_oldest = int(((employees[0][DATE_OF_BIRTH]).split("-"))[1])
+    day_of_oldest = int(((employees[0][DATE_OF_BIRTH]).split("-"))[2])
+
+
+    for employee in employees:
+        if int(((employee[DATE_OF_BIRTH]).split("-"))[0]) < year_of_oldest:
+            name_of_oldest_user[0] = employee[ID_INDEX]
+            year_of_oldest = int(((employee[DATE_OF_BIRTH]).split("-"))[0])
+        elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_oldest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) < month_of_oldest:
+            name_of_oldest_user[0] = employee[ID_INDEX]
+            month_of_oldest = int(((employee[DATE_OF_BIRTH]).split("-"))[1])
+        elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_oldest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) == month_of_oldest and int(((employee[DATE_OF_BIRTH]).split("-"))[2]) < day_of_oldest:
+            name_of_oldest_user[0] = employee[ID_INDEX]
+            day_of_oldest = int(((employee[DATE_OF_BIRTH]).split("-"))[2])
+        elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_oldest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) == month_of_oldest and int(((employee[DATE_OF_BIRTH]).split("-"))[2]) == day_of_oldest:
+            name_of_oldest_user.append(employee[ID_INDEX])
+
+    name_of_youngest_user = []
+    year_of_youngest = int(((employees[0][DATE_OF_BIRTH]).split("-"))[0])
+    month_of_youngest = int(((employees[0][DATE_OF_BIRTH]).split("-"))[1])
+    day_of_youngest = int(((employees[0][DATE_OF_BIRTH]).split("-"))[2])
+
+
+    for employee in employees:
+        if int(((employee[DATE_OF_BIRTH]).split("-"))[0]) > year_of_youngest:
+            name_of_youngest_user[0] = employee[ID_INDEX]
+            year_of_youngest = int(((employee[DATE_OF_BIRTH]).split("-"))[0])
+        elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_youngest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) > month_of_youngest:
+            name_of_youngest_user[0] = employee[ID_INDEX]
+            month_of_youngest = int(((employee[DATE_OF_BIRTH]).split("-"))[1])
+        elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_youngest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) == month_of_youngest and int(((employee[DATE_OF_BIRTH]).split("-"))[2]) > day_of_youngest:
+            name_of_youngest_user[0] = employee[ID_INDEX]
+            day_of_youngest = int(((employee[DATE_OF_BIRTH]).split("-"))[2])
+        elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_youngest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) == month_of_youngest and int(((employee[DATE_OF_BIRTH]).split("-"))[2]) == day_of_youngest:
+            name_of_youngest_user.append(employee[ID_INDEX])
+
+    view.print_general_results(name_of_oldest_user, "id of oldest user: ")
+    view.print_general_results(name_of_youngest_user, "id of youngest user: ")
+
 
 
 def get_average_age():
-    view.print_error_message("Not implemented yet.")
+    current_year = 2021
+    table = hr.TABLE
+    employees = hr.EMPLOYEES
+    list_of_age = []
+    sum_of_age = 0
 
+    for employee in employees:
+        list_of_age.append(current_year - int(((employee[DATE_OF_BIRTH]).split("-"))[0]))
+
+    for element in list_of_age:
+        sum_of_age += element
+    
+    average_age = sum_of_age / len(list_of_age)
+
+    view.print_general_results(average_age, "average age is: ")
+    
 
 def next_birthdays():
     view.print_error_message("Not implemented yet.")

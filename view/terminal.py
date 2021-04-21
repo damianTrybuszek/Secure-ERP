@@ -16,13 +16,6 @@ def print_message(message):
 
 
 def print_general_results(result, label):
-<<<<<<< HEAD
-    """Prints out any type of non-tabular data.
-    It should print numbers (like "@label: @value", floats with 2 digits after the decimal),
-    lists/tuples (like "@label: \n  @item1; @item2"), and dictionaries
-    (like "@label \n  @key1: @value1; @key2: @value2")
-    """
-=======
     # """Prints out any type of non-tabular data.
     # It should print numbers (like "@label: @value", floats with 2 digits after the decimal),
     # lists/tuples (like "@label: \n  @item1; @item2"), and dictionaries
@@ -30,7 +23,6 @@ def print_general_results(result, label):
 
     # """
 
->>>>>>> Damian
     print(label)
 
     print_list = []
@@ -43,9 +35,9 @@ def print_general_results(result, label):
             print_list.append([results.keys(), ": ", results.value()])
         print(';'.join(print_list))
     
-    elif result.isdigit():
+    elif isinstance(result, float) or isinstance(result, int):
         print("{:.2f}".format(float(result)))
-
+    
 # /--------------------------------\
 # |   id   |   product  |   type   |
 # |--------|------------|----------|
