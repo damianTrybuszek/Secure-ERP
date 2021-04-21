@@ -16,20 +16,20 @@ days = dict({"01": 1, "02": 2, "03": 3, "04": 4, "05": 5, "06": 6, "07": 7, "08"
 
 
 def list_transactions():
-
     list_of_transactions = sales.list_of_transactions()
     view.print_table(list_of_transactions, sales.HEADERS)
 
 
 def add_transaction():
-    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
-    add_transaction_list = []
-    for i in range(len(sales.HEADERS)):
-        user_input = view.get_input(sales.HEADERS[i])
-        add_transaction_list.append(user_input)
-    lines.append(add_transaction_list)
-    file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
-    
+    list_of_transactions = sales.new_transaction()
+    user_input = sales.valid_input()
+    if user_input == "YES" or user_input == "Y":
+        file_handling.write_table_to_file(sales.DATAFILE, list_of_transactions, separator=';')
+    else:
+        list_of_transactions.pop(-1)
+        new_add_transaction = add_transaction()
+        return new_add_transaction 
+        
 
 def update_transaction():
     lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
