@@ -20,7 +20,6 @@ def add_customer():
     
     crm.create_customer(table)
 
-
 def update_customer():
 
     customer_id = view.get_input("Please input user ID")
