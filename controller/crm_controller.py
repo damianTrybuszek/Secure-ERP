@@ -11,9 +11,9 @@ def list_customers():
     view.print_table(customers_list, crm.HEADERS)
 
 def add_customer():
-    table = crm.TABLE
+    table = ["", "Please provide name", "Please provide email", "Please provide subscription status"]
 
-    [table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_INDEX]] = view.get_inputs("Please provide name, email and subscription status")
+    [table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_INDEX]] = view.get_inputs([table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_INDEX]])
 
     if len(table[NAME_INDEX]) < 4 or "@" not in table[EMAIL_INDEX] or "." not in table[EMAIL_INDEX] or table[SUBSCRIPTION_INDEX] not in ["0","1"]:
         view.print_error_message("The entered data was incorrect!")
@@ -23,10 +23,10 @@ def add_customer():
 def update_customer():
 
     customer_id = view.get_input("Please input user ID")
-    table = crm.TABLE
+    table = ["", "Please provide name", "Please provide email", "Please provide subscription status"]
 
     if crm.is_id_in_base(customer_id):
-        [table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_INDEX]] = view.get_inputs("Please provide name, email and subscription status")
+        [table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_INDEX]] = view.get_inputs([table[NAME_INDEX], table[EMAIL_INDEX], table[SUBSCRIPTION_INDEX]])
         crm.update_customers(customer_id, table)
     else:
         view.print_error_message("There is no such id in the base.")

@@ -1,7 +1,6 @@
 from model.hr import hr
 from view import terminal as view
-from model import data_manager
-from model import util
+
 
 ID_INDEX = 0
 NAME_INDEX = 1
@@ -16,9 +15,9 @@ def list_employees():
 
 
 def add_employee():
-    table = hr.TABLE
+    table = ["","Please provide name","Please provide date of birth like YYYY-MM-DD","Please input your department","Please input Clearance status"]
 
-    [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]] = view.get_inputs("Please provide name, date of birth, department and clearance level : ")
+    [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]] = view.get_inputs( [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]])
     #ADD CONDITIONS
 
     hr.create_employee(table)
@@ -26,11 +25,11 @@ def add_employee():
 
 def update_employee():
 
-    employee_id = view.get_input("Please input user ID: ")
-    table = hr.TABLE
+    employee_id = view.get_input("Please input user ID")
+    table = ["","Please provide name","Please provide date of birth like YYYY-MM-DD","Please input your department","Please input Clearance status"]
 
     if hr.is_id_in_base(employee_id):
-        [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]] = view.get_inputs("Please provide name, date of birth, department and clearance level : ")
+        [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]] = view.get_inputs( [table[NAME_INDEX], table[DATE_OF_BIRTH], table[DEPARTMENT], table[CLEARANCE_LEVEL]])
         hr.update_employee(employee_id, table)
     else:
         view.print_error_message("There is no such id in the base.")
@@ -38,14 +37,13 @@ def update_employee():
 
 
 def delete_employee():
-    employee_id = view.get_input("Please input user ID: ")
+    employee_id = view.get_input("Please input user ID")
     deleted_id = hr.delete_employee(employee_id)
     view.print_message(deleted_id)
 
 
 
 def get_oldest_and_youngest():
-    table = hr.TABLE
     employees = hr.EMPLOYEES 
     
     name_of_oldest_user = []
@@ -96,7 +94,6 @@ def get_oldest_and_youngest():
 
 def get_average_age():
     current_year = 2021
-    table = hr.TABLE
     employees = hr.EMPLOYEES
     list_of_age = []
     sum_of_age = 0
@@ -113,7 +110,6 @@ def get_average_age():
     
 
 def next_birthdays():
-    table = hr.TABLE
     employees = hr.EMPLOYEES
     date_within_two_weeks = []
     coming_birthday_names = []
@@ -158,7 +154,6 @@ def next_birthdays():
             
 
 def count_employees_with_clearance():
-    table = hr.TABLE
     employees = hr.EMPLOYEES
     least_clearance = employees[0][CLEARANCE_LEVEL] 
     counter = 0
@@ -174,7 +169,6 @@ def count_employees_with_clearance():
 
 
 def count_employees_per_department():
-    table = hr.TABLE
     employees = hr.EMPLOYEES
 
     department_dict = {}

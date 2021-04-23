@@ -99,8 +99,15 @@ def get_input(label):
     return user_input
 
 
+# def get_inputs(labels):
+#     user_inputs = input(f"\n{labels}: ").split()
+#     return user_inputs
+
 def get_inputs(labels):
-    user_inputs = input(f"\n{labels}: ").split()
+    user_inputs = []
+    for label in labels:
+        user_input = input(f"\n{label}: ")
+        user_inputs.append(user_input)
     return user_inputs
 
 

@@ -97,7 +97,7 @@ def count_and_sum_transactions():
                         if day_of_transaction >= day_of_user_input_start_date:
                             counter += 1
                             sum_of_transactions = float(sum_of_transactions) + float(lines[line][PRICE_INDEX])
-            if transaction_date[0:4] == user_range_date_list[1][0:4]:
+            elif transaction_date[0:4] == user_range_date_list[1][0:4]:
                 if month_of_transaction <= month_of_user_input_end_date:
                     if month_of_transaction < month_of_user_input_end_date:
                         counter += 1
