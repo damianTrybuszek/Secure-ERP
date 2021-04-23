@@ -31,12 +31,15 @@ def print_general_results(result, label):
         print('; '.join(result))
         
     elif isinstance(result, dict):
-        for results in result:
-            print_list.append([results.keys(), ": ", results.value()])
+        for key in result:
+            print_list.append(f"{key} : {result[key]}")
         print(';'.join(print_list))
     
     elif isinstance(result, float) or isinstance(result, int):
-        print("{:.2f}".format(float(result)))
+        if result %1 == 0:
+            print(result)
+        else:
+            print("{:.2f}".format(float(result)))
     
 # /--------------------------------\
 # |   id   |   product  |   type   |

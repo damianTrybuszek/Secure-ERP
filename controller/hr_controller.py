@@ -8,6 +8,7 @@ NAME_INDEX = 1
 DATE_OF_BIRTH = 2
 DEPARTMENT = 3
 CLEARANCE_LEVEL = 4
+DATE = 5
 
 def list_employees():
     employee_list = hr.get_employees()
@@ -25,7 +26,7 @@ def add_employee():
 
 def update_employee():
 
-    employee_id = view.get_input("Please input user ID")
+    employee_id = view.get_input("Please input user ID: ")
     table = hr.TABLE
 
     if hr.is_id_in_base(employee_id):
@@ -37,7 +38,7 @@ def update_employee():
 
 
 def delete_employee():
-    employee_id = view.get_input("Please input user ID")
+    employee_id = view.get_input("Please input user ID: ")
     deleted_id = hr.delete_employee(employee_id)
     view.print_message(deleted_id)
 
@@ -55,16 +56,16 @@ def get_oldest_and_youngest():
 
     for employee in employees:
         if int(((employee[DATE_OF_BIRTH]).split("-"))[0]) < year_of_oldest:
-            name_of_oldest_user[0] = employee[ID_INDEX]
+            name_of_oldest_user[0] = employee[NAME_INDEX]
             year_of_oldest = int(((employee[DATE_OF_BIRTH]).split("-"))[0])
         elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_oldest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) < month_of_oldest:
-            name_of_oldest_user[0] = employee[ID_INDEX]
+            name_of_oldest_user[0] = employee[NAME_INDEX]
             month_of_oldest = int(((employee[DATE_OF_BIRTH]).split("-"))[1])
         elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_oldest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) == month_of_oldest and int(((employee[DATE_OF_BIRTH]).split("-"))[2]) < day_of_oldest:
-            name_of_oldest_user[0] = employee[ID_INDEX]
+            name_of_oldest_user[0] = employee[NAME_INDEX]
             day_of_oldest = int(((employee[DATE_OF_BIRTH]).split("-"))[2])
         elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_oldest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) == month_of_oldest and int(((employee[DATE_OF_BIRTH]).split("-"))[2]) == day_of_oldest:
-            name_of_oldest_user.append(employee[ID_INDEX])
+            name_of_oldest_user.append(employee[NAME_INDEX])
 
     name_of_youngest_user = []
     year_of_youngest = int(((employees[0][DATE_OF_BIRTH]).split("-"))[0])
@@ -74,19 +75,22 @@ def get_oldest_and_youngest():
 
     for employee in employees:
         if int(((employee[DATE_OF_BIRTH]).split("-"))[0]) > year_of_youngest:
-            name_of_youngest_user[0] = employee[ID_INDEX]
+            name_of_youngest_user[0] = employee[NAME_INDEX]
             year_of_youngest = int(((employee[DATE_OF_BIRTH]).split("-"))[0])
         elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_youngest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) > month_of_youngest:
-            name_of_youngest_user[0] = employee[ID_INDEX]
+            name_of_youngest_user[0] = employee[NAME_INDEX]
             month_of_youngest = int(((employee[DATE_OF_BIRTH]).split("-"))[1])
         elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_youngest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) == month_of_youngest and int(((employee[DATE_OF_BIRTH]).split("-"))[2]) > day_of_youngest:
-            name_of_youngest_user[0] = employee[ID_INDEX]
+            name_of_youngest_user[0] = employee[NAME_INDEX]
             day_of_youngest = int(((employee[DATE_OF_BIRTH]).split("-"))[2])
         elif int(((employee[DATE_OF_BIRTH]).split("-"))[0]) == year_of_youngest and int(((employee[DATE_OF_BIRTH]).split("-"))[1]) == month_of_youngest and int(((employee[DATE_OF_BIRTH]).split("-"))[2]) == day_of_youngest:
-            name_of_youngest_user.append(employee[ID_INDEX])
-
-    view.print_general_results(name_of_oldest_user, "id of oldest user: ")
-    view.print_general_results(name_of_youngest_user, "id of youngest user: ")
+            name_of_youngest_user.append(employee[NAME_INDEX])
+    
+    oldest_and_youngest = tuple(name_of_oldest_user)
+    oldest_and_youngest += tuple(name_of_youngest_user)
+    print(oldest_and_youngest)
+    view.print_general_results(oldest_and_youngest, "name of oldest and youngest user: ")
+    # view.print_general_results(name_of_youngest_user, "name of youngest user: ")
 
 
 
@@ -109,15 +113,81 @@ def get_average_age():
     
 
 def next_birthdays():
-    view.print_error_message("Not implemented yet.")
+    table = hr.TABLE
+    employees = hr.EMPLOYEES
+    date_within_two_weeks = []
+    coming_birthday_names = []
+    user_input_date = view.get_input("Please input the date like : MM-DD")
 
+    month = int(((user_input_date).split("-"))[0])
+    day = int(((user_input_date).split("-"))[1])
+
+    if month in range(1,13) and day in range(1,32):
+
+        for _ in range(14):
+            date = (f"{str(month).zfill(2)}-{str(day).zfill(2)}")
+            date_within_two_weeks.append(date)
+
+            if day == 31:
+                if month == 12:
+                    month = 1
+                    day = 1
+                else:
+                    day = 1
+                    month += 1
+            else:
+                day += 1
+        
+        for employee in employees:
+
+            month_of_birth = int(((employee[DATE_OF_BIRTH]).split("-"))[1])
+            day_of_birth = int(((employee[DATE_OF_BIRTH]).split("-"))[2])
+            date = (f"{str(month_of_birth).zfill(2)}-{str(day_of_birth).zfill(2)}")
+            if date in date_within_two_weeks:
+                coming_birthday_names.append(employee[NAME_INDEX])
+    
+
+    
+        if len(coming_birthday_names) > 0:
+            view.print_general_results(coming_birthday_names, "Names of employees having birthdays within the two weeks")
+        else:
+            view.print_error_message("Nobody has birthday within two weeks")
+    else:
+        view.print_error_message("The input date is not correct")
+
+            
 
 def count_employees_with_clearance():
-    view.print_error_message("Not implemented yet.")
+    table = hr.TABLE
+    employees = hr.EMPLOYEES
+    least_clearance = employees[0][CLEARANCE_LEVEL] 
+    counter = 0
+    for employee in employees:
+        if employee[CLEARANCE_LEVEL] < least_clearance:
+            least_clearance = employee[CLEARANCE_LEVEL]
+    
+    for employee in employees:
+        if employee[CLEARANCE_LEVEL] == least_clearance:
+            counter += 1
+
+    view.print_general_results(counter, "number of employees with at least clearance level")
 
 
 def count_employees_per_department():
-    view.print_error_message("Not implemented yet.")
+    table = hr.TABLE
+    employees = hr.EMPLOYEES
+
+    department_dict = {}
+
+    for employee in employees:
+        department_dict.update({employee[DEPARTMENT]: 0})
+
+    for employee in employees:
+        department_dict[employee[DEPARTMENT]] += 1
+
+    view.print_general_results(department_dict, "number of departments")
+    
+
 
 
 def run_operation(option):

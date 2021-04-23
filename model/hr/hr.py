@@ -18,6 +18,7 @@ DATE_OF_BIRTH = 2
 DEPARTMENT = 3
 CLEARANCE_LEVEL = 4
 
+
 TABLE = ["","","","",""]
 
 EMPLOYEES = data_manager.read_table_from_file(DATAFILE, separator=';') 
@@ -25,7 +26,7 @@ EMPLOYEES = data_manager.read_table_from_file(DATAFILE, separator=';')
 
 def get_employees():
     
-    return data_manager.read_table_from_file(hr.DATAFILE, separator=';')
+    return data_manager.read_table_from_file(DATAFILE, separator=';')
 
 def add_employee():
 
