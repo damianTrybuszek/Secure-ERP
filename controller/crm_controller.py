@@ -17,8 +17,8 @@ def add_customer():
 
     if len(table[NAME_INDEX]) < 4 or "@" not in table[EMAIL_INDEX] or "." not in table[EMAIL_INDEX] or table[SUBSCRIPTION_INDEX] not in ["0","1"]:
         view.print_error_message("The entered data was incorrect!")
-    
-    crm.create_customer(table)
+    else: 
+        crm.create_customer(table)
 
 def update_customer():
 
