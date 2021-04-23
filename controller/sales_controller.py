@@ -18,6 +18,9 @@ def list_transactions():
     view.print_table(list_of_transactions, sales.HEADERS)
 
 
+
+
+
 def add_transaction():
     list_of_transactions = sales.add_new_transaction()
     sales.valid_input(list_of_transactions)   
