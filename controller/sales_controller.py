@@ -7,8 +7,6 @@ CUSTOMER_INDEX = 1
 PRODUCT_INDEX = 2
 PRICE_INDEX = 3
 DATE_INDEX = 4
-FIRST_POSITION_ON_LIST = 0
-SECOND_POSITION_ON_LIST = 1
 months = dict({"01": 1, "02": 2, "03": 3, "04": 4, "05": 5, "06": 6, "07": 7, "08": 8, "09": 9, "10": 10, "11": 11, "12": 12})
 days = dict({"01": 1, "02": 2, "03": 3, "04": 4, "05": 5, "06": 6, "07": 7, "08": 8, "09": 9, "10": 10,
              "11": 11, "12": 12, "13": 13, "14": 14, "15": 15, "16": 16, "17": 17, "18": 18, "19": 19, "20": 20,
@@ -16,42 +14,30 @@ days = dict({"01": 1, "02": 2, "03": 3, "04": 4, "05": 5, "06": 6, "07": 7, "08"
 
 
 def list_transactions():
-    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
-    view.print_table(lines, sales.HEADERS)
+    list_of_transactions = sales.list_of_transactions()
+    view.print_table(list_of_transactions, sales.HEADERS)
+
+
+
 
 
 def add_transaction():
-    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
-    add_transaction_list = []
-    for i in range(len(sales.HEADERS)):
-        user_input = view.get_input(sales.HEADERS[i])
-        add_transaction_list.append(user_input)
-    lines.append(add_transaction_list)
-    file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
-    
+    list_of_transactions = sales.add_new_transaction()
+    sales.valid_input(list_of_transactions)   
+
 
 def update_transaction():
-    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
-    user_input_id = view.get_input(sales.HEADERS[ID_INDEX])
-    for line in range(len(lines)):
-        if user_input_id == lines[line][ID_INDEX]:
-            for i in range(len(sales.HEADERS) - 1):
-                user_input_update = view.get_input(sales.HEADERS[i + 1])
-                lines[line][i + 1] = user_input_update
-    if user_input_id != lines[line][ID_INDEX]:
-        view.print_message("There is no such transaction with this Id")
-    file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
+    update_list = sales.update_list()
+    list_of_transactions = update_list[0]
+    counter = update_list[1]
+    sales.update_and_delete_transaction(list_of_transactions, counter)
 
 
 def delete_transaction():
-    lines = file_handling.read_table_from_file(sales.DATAFILE, separator=';')
-    user_input_id = view.get_input(sales.HEADERS[ID_INDEX])
-    for line in range(len(lines)):
-        if user_input_id == lines[line][ID_INDEX]:
-            lines.pop(line)
-            return file_handling.write_table_to_file(sales.DATAFILE, lines, separator=';')
-    if user_input_id != lines[line][ID_INDEX]:
-        view.print_message("There is no such transaction with this Id")
+    update_list = sales.delete_list_element()
+    list_of_transactions = update_list[0]
+    counter = update_list[1]
+    sales.update_and_delete_transaction(list_of_transactions, counter)
 
 
 def biggest_revenue_product_and_transaction():
@@ -91,18 +77,18 @@ def count_and_sum_transactions():
     
     for line in range(len(lines)):
         transaction_date = lines[line][DATE_INDEX]
-        month_of_user_input_start_date = months.get(user_range_date_list[FIRST_POSITION_ON_LIST][5:7])
-        month_of_user_input_end_date = months.get(user_range_date_list[SECOND_POSITION_ON_LIST][5:7])
+        month_of_user_input_start_date = months.get(user_range_date_list[0][5:7])
+        month_of_user_input_end_date = months.get(user_range_date_list[1][5:7])
         month_of_transaction = months.get(transaction_date[5:7])
-        day_of_user_input_start_date = days.get(user_range_date_list[FIRST_POSITION_ON_LIST][8:10])
-        day_of_user_input_end_date  = days.get(user_range_date_list[SECOND_POSITION_ON_LIST][8:10])
+        day_of_user_input_start_date = days.get(user_range_date_list[0][8:10])
+        day_of_user_input_end_date  = days.get(user_range_date_list[1][8:10])
         day_of_transaction = days.get(transaction_date[8:10])
         
-        if transaction_date[0:4] > user_range_date_list[FIRST_POSITION_ON_LIST][0:4] and transaction_date[0:4] < user_range_date_list[SECOND_POSITION_ON_LIST][0:4]:
+        if transaction_date[0:4] > user_range_date_list[0][0:4] and transaction_date[0:4] < user_range_date_list[1][0:4]:
             counter += 1
             sum_of_transactions = float(sum_of_transactions) + float(lines[line][PRICE_INDEX])
-        elif transaction_date[0:4] == user_range_date_list[FIRST_POSITION_ON_LIST][0:4] or transaction_date[0:4] == user_range_date_list[SECOND_POSITION_ON_LIST][0:4]:
-            if transaction_date[0:4] == user_range_date_list[FIRST_POSITION_ON_LIST][0:4]:
+        elif transaction_date[0:4] == user_range_date_list[0][0:4] or transaction_date[0:4] == user_range_date_list[1][0:4]:
+            if transaction_date[0:4] == user_range_date_list[0][0:4]:
                 if month_of_transaction >= month_of_user_input_start_date:
                     if month_of_transaction > month_of_user_input_start_date:
                         counter += 1
@@ -111,7 +97,7 @@ def count_and_sum_transactions():
                         if day_of_transaction >= day_of_user_input_start_date:
                             counter += 1
                             sum_of_transactions = float(sum_of_transactions) + float(lines[line][PRICE_INDEX])
-            if transaction_date[0:4] == user_range_date_list[SECOND_POSITION_ON_LIST][0:4]:
+            if transaction_date[0:4] == user_range_date_list[1][0:4]:
                 if month_of_transaction <= month_of_user_input_end_date:
                     if month_of_transaction < month_of_user_input_end_date:
                         counter += 1
@@ -125,15 +111,15 @@ def count_and_sum_transactions():
 
 def count_transactions_between():
     transactions_operation = count_and_sum_transactions()
-    counter = transactions_operation[FIRST_POSITION_ON_LIST]
+    counter = transactions_operation[0]
     view.print_message(f"The number of transactions carried out during the specified time period: {counter}")
 
 
 def sum_transactions_between(): 
     transactions_operation = count_and_sum_transactions()
-    sum_of_transactions = transactions_operation[SECOND_POSITION_ON_LIST]
-    view.print_message(f"The sum of transactions carried out during the specified time period: {sum_of_transactions}")
-    
+    sum_of_transactions = transactions_operation[1]
+    view.print_message(f"The sum of transactions carried out during the specified time period: {sum_of_transactions}" + " $")
+
 
 def run_operation(option):
     if option == 1:
