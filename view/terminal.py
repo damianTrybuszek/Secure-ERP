@@ -23,7 +23,7 @@ def print_general_results(result, label):
 
     # """
 
-    print(label)
+    print(f"\n{label}\n")
 
     print_list = []
     
@@ -84,7 +84,8 @@ def print_table(table, headers):
             temp_width_elements = len(str(longest_words[i]))-len(str(element[i]))
             row_second.append("  "+element[i]+(temp_width_elements*" ")+"  |")
         rows.append(row_second)
-        
+
+    print("\n")    
     print("/"+(sum_counters*"-")+"\\")
     for i in range(len(rows)):
         if i != 0:
