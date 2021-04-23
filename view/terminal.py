@@ -35,9 +35,9 @@ def print_general_results(result, label):
             print_list.append([results.keys(), ": ", results.value()])
         print(';'.join(print_list))
     
-    elif result.isdigit():
+    elif isinstance(result, float) or isinstance(result, int):
         print("{:.2f}".format(float(result)))
-
+    
 # /--------------------------------\
 # |   id   |   product  |   type   |
 # |--------|------------|----------|
@@ -96,7 +96,6 @@ def get_input(label):
 
 
 def get_inputs(labels):
-    
     user_inputs = input(f"\n{labels}: ").split()
     return user_inputs
 
